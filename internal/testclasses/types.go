@@ -1,13 +1,17 @@
 package testclasses
 
-import "go-ktype/runtime"
+import (
+	"go-ktype/runtime"
+	"time"
+)
 
 type SampleWithDependency struct {
 	Dependency Dependency `json:"dependency"`
 }
 
 type Dependency struct {
-	Id string `json:"id"`
+	Id   string `json:"id"`
+	Name string `json:"name"`
 }
 
 type SampleAliasedDependency struct {
@@ -15,7 +19,9 @@ type SampleAliasedDependency struct {
 }
 
 type AliasedDependency struct {
-	Server uint64 `json:"server"`
+	Server    uint64    `json:"server"`
+	Token     string    `json:"token"`
+	Timestamp time.Time `json:"timestamp"`
 }
 
 type SampleWrappedSample struct {
