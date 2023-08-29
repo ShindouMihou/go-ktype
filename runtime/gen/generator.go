@@ -22,6 +22,9 @@ type Transpiler struct {
 	imports    []string
 }
 
+// NewTranspiler creates a transpiler based on a Typist and a Properties, but this is not recommended
+// unless for some quickie, the "importMap" parameter here refers to a file path which the
+// method will read and use as the import map.
 func NewTranspiler(typist Typist, importMap string, properties Properties) (*Transpiler, error) {
 	var aliases map[string]string
 	if importMap != "" {
@@ -53,9 +56,13 @@ func (transpiler *Transpiler) Transpile(runtime *runtime.Runtime) string {
 	imports := strings.Builder{}
 	classes := strings.Builder{}
 
+	classCount := 0
 	for _, class := range runtime.Classes {
 		classes.WriteString(transpiler.encode(class))
-		classes.WriteString(DoubleBackedWhitespace)
+		if classCount < (len(runtime.Classes) - 1) {
+			classes.WriteString(DoubleBackedWhitespace)
+		}
+		classCount++
 	}
 
 	for _, imprt := range transpiler.imports {

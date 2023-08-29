@@ -41,3 +41,15 @@ is simply a dumb template of how a Kotlin file with data class should be generat
 
 Combined, all of these eventually generate into "valid" Kotlin files, but it's not perfect and shouldn't be as this is simply a little 
 experimental and for-fun project.
+
+## I want to try it out!
+
+Well, you can certainly try it out by downloading the package:
+```shell
+go get github.com/ShindouMihou/go-ktype
+```
+
+After downloading the package, you can copy the [`generators/kotlin`](generators/kotlin) folder under somewhere where inside your code, 
+you can retrieve, then simply create your structs and then import the import map and typist file to create your little runtime. You can 
+read the following example file:
+- [`examples/sample.go`](examples/sample.go)

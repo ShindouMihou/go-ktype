@@ -4,26 +4,24 @@ import "reflect"
 
 type TypeTranslator = func(t reflect.Type) string
 
-type BiasedTypeTranslatorI struct {
-	Mapper     map[string]string
-	Translator TypeTranslator
+type biasedTypeTranslatorConfig struct {
+	Mapper map[string]string
 }
 
-var BiasedTypeTranslator = &BiasedTypeTranslatorI{
+var BiasedTypeTranslatorConfiguration = &biasedTypeTranslatorConfig{
 	Mapper: map[string]string{
 		"time.Time": "instant",
 	},
-	Translator: biasedTypeTranslator,
 }
 
 // Map adds a mapping property that maps a Golang type to a more generic extension, for example,
 // time.Time can be translated to "instant" which has a import map that maps "instant" to "kotlinx.datetime.Instant".
-func (translator *BiasedTypeTranslatorI) Map(name string, value string) *BiasedTypeTranslatorI {
+func (translator *biasedTypeTranslatorConfig) Map(name string, value string) *biasedTypeTranslatorConfig {
 	translator.Mapper[name] = value
 	return translator
 }
 
-func biasedTypeTranslator(t reflect.Type) string {
+func BiasedTypeTranslator(t reflect.Type) string {
 	switch t.Kind() {
 	case reflect.Uint, reflect.Int, reflect.Uint8, reflect.Uint16, reflect.Int8, reflect.Int16, reflect.Uint32, reflect.Int32:
 		return "int"
@@ -38,17 +36,17 @@ func biasedTypeTranslator(t reflect.Type) string {
 	case reflect.Float64:
 		return "double"
 	case reflect.Pointer:
-		return "nullable[" + biasedTypeTranslator(t.Elem()) + "]"
+		return "nullable[" + BiasedTypeTranslator(t.Elem()) + "]"
 	case reflect.Map:
 		key := t.Key()
 		elem := t.Elem()
-		return "map[" + biasedTypeTranslator(key) + "]" + biasedTypeTranslator(elem)
+		return "map[" + BiasedTypeTranslator(key) + "]" + BiasedTypeTranslator(elem)
 	case reflect.Slice:
 		elem := t.Elem()
-		return "slice[" + biasedTypeTranslator(elem) + "]"
+		return "slice[" + BiasedTypeTranslator(elem) + "]"
 	case reflect.Struct:
 		fname := t.PkgPath() + "." + t.Name()
-		if alias, ok := BiasedTypeTranslator.Mapper[fname]; ok {
+		if alias, ok := BiasedTypeTranslatorConfiguration.Mapper[fname]; ok {
 			return alias
 		}
 		return t.Name()

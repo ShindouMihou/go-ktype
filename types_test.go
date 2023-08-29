@@ -1,4 +1,4 @@
-package go_ktype
+package main
 
 import (
 	"encoding/json"
@@ -9,11 +9,11 @@ import (
 )
 
 func TestClassFrom(t *testing.T) {
-	runtime := runtime.NewRuntime()
-	err := runtime.Load(testclasses.SampleWithDependency{})
+	rtime := runtime.NewRuntime()
+	err := rtime.Load(testclasses.SampleWithDependency{})
 	if err != nil {
 		t.Fatal(err)
 	}
-	bytes, _ := json.MarshalIndent(runtime.Classes["SampleWithDependency"], "", "  ")
+	bytes, _ := json.MarshalIndent(rtime.Classes["SampleWithDependency"], "", "  ")
 	fmt.Println(string(bytes))
 }

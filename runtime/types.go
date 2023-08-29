@@ -20,7 +20,7 @@ type Runtime struct {
 }
 
 func NewRuntime() *Runtime {
-	return &Runtime{Classes: make(map[string]Class), TypeTranslator: BiasedTypeTranslator.Translator}
+	return &Runtime{Classes: make(map[string]Class), TypeTranslator: BiasedTypeTranslator}
 }
 
 func (runtime *Runtime) Load(types ...any) error {

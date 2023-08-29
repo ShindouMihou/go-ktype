@@ -1,4 +1,4 @@
-package go_ktype
+package main
 
 import (
 	"go-ktype/internal/testclasses"
