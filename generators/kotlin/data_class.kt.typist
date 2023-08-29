@@ -1,0 +1,14 @@
+--typist:section class_declaration
+@Serializable
+data class {$NAME}(
+{$FIELDS}
+)
+--typist:section imports
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+--typist:section import
+import {$PACKAGE}
+--typist:section package
+package {$PACKAGE}
+--typist:section field_declaration
+    @SerialName("{$JSON_KEY}") val {$FIELD_NAME}: {$TYPE}
